@@ -31,7 +31,9 @@ public class View extends JFrame{
 	private JLabel outHeader;
 	private JFileChooser fc;
 	private File file; 
+	private JUnitGen gen = null;
 public View (){
+	super("TestManager");
 	fc = new JFileChooser();
 	outPanel = new JPanel(new FlowLayout());
 	logPanel = new JPanel(new FlowLayout());
@@ -43,9 +45,13 @@ public View (){
 	logText = new JTextArea("Application log appears on this area\n",10,50);
 	logHeader = new JLabel("Log:");
 	outHeader = new JLabel("Out:");
-	setUp();
+	try {
+		setUp();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
 }
-public void setUp(){
+public void setUp() throws Exception{
 	//set up the menu items
 	menu.add(loadItem);
 	menu.add(saveItem);
@@ -60,12 +66,16 @@ public void setUp(){
 	loadItem.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			int returnVal = fc.showOpenDialog(View.this);
-			 
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                file = fc.getSelectedFile();
-                //This is where a real application would open the file.
-                logText.append("Opening: " + file.getName() + " on "+ file.getPath() + "\n");
-            } else {
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					file = fc.getSelectedFile();
+					gen = new JUnitGen();
+					gen.setPath(file.getPath());
+					gen.analyzeIt();
+					//This is where a real application would open the file.
+					logText.append("Opening: " + file.getName() + " on "+ file.getPath() + "\n");
+					logText.append(gen.returnedObjects());
+            }else{
+            	file = null;
                 logText.append("Open command cancelled by user.\n");
             }
             logText.setCaretPosition(logText.getDocument().getLength());
