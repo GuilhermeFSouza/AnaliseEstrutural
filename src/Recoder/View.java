@@ -1,7 +1,9 @@
 package Recoder;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -46,6 +48,11 @@ public View (){
 	logHeader = new JLabel("Log:");
 	outHeader = new JLabel("Out:");
 	try {
+		Font font = new Font("Verdana", Font.BOLD, 12);
+		logText.setFont(font);
+		outputText.setFont(font);
+		logText.setForeground(Color.WHITE);
+		logText.setBackground(Color.BLACK);
 		setUp();
 	} catch (Exception e) {
 		e.printStackTrace();
